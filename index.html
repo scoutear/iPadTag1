@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iPadTag</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0047AB" />
+</head>
+<body>
+  <h1 style="text-align:center;color:#0047AB;">iPadTag PWA en construcción</h1>
+  <p style="text-align:center;">Instalá esta app desde tu navegador móvil</p>
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('SW registrado', reg))
+        .catch(err => console.error('SW error', err));
+    }
+  </script>
+</body>
+</html>
