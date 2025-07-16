@@ -5,27 +5,147 @@
   <title>Campograma Pádel</title>
   <style>
     /* ========= ESTILOS =========== */
-    html,body{margin:0;height:100%;background:#222;font-family:sans-serif;color:#fff;overflow:auto;}
-    body{display:flex;flex-direction:row;align-items:flex-start;justify-content:center;padding:10px;gap:4px;}
-    .sidebar{width:160px;padding:6px;overflow-y:auto;flex-shrink:0;}
-    #court-container{display:flex;align-items:center;justify-content:center;max-width:480px;}
-    svg#court{background:#002266;border:2px solid #fff;height:90vh;width:auto;aspect-ratio:1/2;display:block;}
-    .buttons{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;}
-    .buttons.horizontal{flex-direction:row;}
-    .buttons button{flex:1 1 auto;min-width:40px;padding:6px;font-size:13px;background:#444;border:none;border-radius:4px;color:#fff;cursor:pointer;text-align:center;}
-    .buttons button.small{flex:none;width:24px;padding:4px 0;font-size:12px;}
-    button.active{background:#ff6600 !important;}
-    table,th,td{border:1px solid #555;border-collapse:collapse;padding:4px;font-size:11px;color:#fff;}
-    th{background:#333;}
-    td button{background:#aa3333;border:none;padding:3px 6px;border-radius:3px;font-size:11px;color:#fff;cursor:pointer;}
-    td button:hover{background:#dd4444;}
-    .watermark{font-size:1.5px;fill:#fff;opacity:.1;writing-mode:vertical-rl;text-anchor:middle;}
-    .dropdown{background:#444;border-radius:4px;margin-bottom:10px;font-size:13px;}
-    .dropdown summary{cursor:pointer;padding:6px;list-style:none;}
-    .dropdown[open] summary::after{content:"▲";float:right;}
-    .dropdown summary::after{content:"▼";float:right;}
-    .dropdown label{display:block;padding:4px 8px;cursor:pointer;}
-    .dropdown label:hover{background:#666;}
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #222;
+      font-family: sans-serif;
+      color: #fff;
+      overflow: auto;
+    }
+    body {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 10px;
+      gap: 4px;
+    }
+    .sidebar {
+      width: 160px;
+      padding: 6px;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    #court-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 480px;
+    }
+    svg#court {
+      background: #002266;
+      border: 2px solid #fff;
+      height: 90vh;
+      width: auto;
+      aspect-ratio: 1/2;
+      display: block;
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .buttons.horizontal {
+      flex-direction: row;
+    }
+    .buttons button {
+      flex: 1 1 auto;
+      min-width: 40px;
+      padding: 6px;
+      font-size: 13px;
+      background: #444;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+      text-align: center;
+    }
+    .buttons button.small {
+      flex: none;
+      width: 24px;
+      padding: 4px 0;
+      font-size: 12px;
+    }
+    button.active {
+      background: #ff6600 !important;
+    }
+    table, th, td {
+      border: 1px solid #555;
+      border-collapse: collapse;
+      padding: 4px;
+      font-size: 11px;
+      color: #fff;
+    }
+    th {
+      background: #333;
+    }
+    td button {
+      background: #aa3333;
+      border: none;
+      padding: 3px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+      color: #fff;
+      cursor: pointer;
+    }
+    td button:hover {
+      background: #dd4444;
+    }
+    .watermark {
+      font-size: 1.5px;
+      fill: #fff;
+      opacity: .1;
+      writing-mode: vertical-rl;
+      text-anchor: middle;
+    }
+    .dropdown {
+      background: #444;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .dropdown summary {
+      cursor: pointer;
+      padding: 6px;
+      list-style: none;
+    }
+    .dropdown[open] summary::after {
+      content: "▲";
+      float: right;
+    }
+    .dropdown summary::after {
+      content: "▼";
+      float: right;
+    }
+    .dropdown label {
+      display: block;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+    .dropdown label:hover {
+      background: #666;
+    }
+    /* ====== BARRAS ====== */
+    .bar-container {
+      width: 100%;
+      height: 10px;
+      background: #333;
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 4px 0 10px;
+    }
+    .bar {
+      display: flex;
+      height: 100%;
+    }
+    .bar > div {
+      height: 100%;
+    }
+    .bar-gray { background: #888; }
+    .bar-green { background: #00e000; }
+    .bar-red { background: #e00000; }
   </style>
 </head>
 <body>
@@ -55,8 +175,8 @@
 
   <h3>Resultado</h3>
   <div class="buttons horizontal" id="input-status">
-    <button data-status="WINNER">WINNER</button>
-    <button data-status="LOSER">LOSER</button>
+    <button data-status="IN">IN</button>
+    <button data-status="OUT">OUT</button>
   </div>
 
   <h3>Set</h3>
@@ -68,12 +188,18 @@
 
   <h3>Game</h3>
   <div class="buttons" id="input-game">
-    <button data-game="1"  class="small active">1</button><button data-game="2"  class="small">2</button>
-    <button data-game="3"  class="small">3</button><button data-game="4"  class="small">4</button>
-    <button data-game="5"  class="small">5</button><button data-game="6"  class="small">6</button>
-    <button data-game="7"  class="small">7</button><button data-game="8"  class="small">8</button>
-    <button data-game="9"  class="small">9</button><button data-game="10" class="small">10</button>
-    <button data-game="11" class="small">11</button><button data-game="12" class="small">12</button>
+    <button data-game="1" class="small active">1</button>
+    <button data-game="2" class="small">2</button>
+    <button data-game="3" class="small">3</button>
+    <button data-game="4" class="small">4</button>
+    <button data-game="5" class="small">5</button>
+    <button data-game="6" class="small">6</button>
+    <button data-game="7" class="small">7</button>
+    <button data-game="8" class="small">8</button>
+    <button data-game="9" class="small">9</button>
+    <button data-game="10" class="small">10</button>
+    <button data-game="11" class="small">11</button>
+    <button data-game="12" class="small">12</button>
     <button data-game="13" class="small">13</button>
   </div>
 </div>
@@ -108,6 +234,13 @@
 
   <div id="action-counter" style="margin-top:10px;font-size:12px;"></div>
 
+  <div id="player-bars" style="margin-top:14px;">
+    <div><strong>Jug1</strong><div class="bar-container"><div id="bar-Jug1" class="bar"></div></div></div>
+    <div><strong>Jug2</strong><div class="bar-container"><div id="bar-Jug2" class="bar"></div></div></div>
+    <div><strong>Jug3</strong><div class="bar-container"><div id="bar-Jug3" class="bar"></div></div></div>
+    <div><strong>Jug4</strong><div class="bar-container"><div id="bar-Jug4" class="bar"></div></div></div>
+  </div>
+
   <h3>Registros</h3>
   <table id="data-table">
     <thead>
@@ -120,176 +253,247 @@
   </table>
 </div>
 
-<!-- =================== SCRIPT =================== -->
 <script>
-/* ====== VARIABLES ====== */
-let selPlayer='Jug1',selAction=null,selStatus=null;
-let selSet='1',selGame='1';
-let pending=null,records=[],idx=1,heatmapMode=false;
-const svg=document.getElementById('court');let layerGroup;
+let selPlayer='Jug1', selAction=null, selStatus=null;
+let selSet='1', selGame='1';
+let pending=null, records=[], idx=1, heatmapMode=false;
+const svg=document.getElementById('court');
+let layerGroup;
 
-/* ====== BOTONES INPUT ====== */
-function activate(btn,group){
-  document.querySelectorAll(`#${group} button`).forEach(b=>b.classList.remove('active'));
+function activate(btn, group) {
+  document.querySelectorAll(`#${group} button`).forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  if(group==='input-player')selPlayer=btn.dataset.player;
-  else if(group==='input-actions')selAction=btn.dataset.action;
-  else if(group==='input-status')selStatus=btn.dataset.status;
-  else if(group==='input-set')selSet=btn.dataset.set;
-  else if(group==='input-game')selGame=btn.dataset.game;
+  if(group==='input-player') selPlayer=btn.dataset.player;
+  else if(group==='input-actions') selAction=btn.dataset.action;
+  else if(group==='input-status') selStatus=btn.dataset.status;
+  else if(group==='input-set') selSet=btn.dataset.set;
+  else if(group==='input-game') selGame=btn.dataset.game;
   pending=null;
 }
 ['input-player','input-actions','input-status','input-set','input-game'].forEach(g=>{
-  document.querySelectorAll(`#${g} button`).forEach(b=>b.addEventListener('click',()=>activate(b,g)));
+  document.querySelectorAll(`#${g} button`).forEach(b => b.addEventListener('click',()=>activate(b,g)));
 });
 
-/* ====== DIBUJAR CANCHA ====== */
 function drawCourt(){
   svg.innerHTML='';
   ['0,0,10,0','10,0,10,20','10,20,0,20','0,20,0,0','0,10,10,10','0,3,10,3','0,17,10,17','5,3,5,17']
     .forEach(s=>{
       const [x1,y1,x2,y2]=s.split(','),l=document.createElementNS(svg.namespaceURI,'line');
-      l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',x2);l.setAttribute('y2',y2);
-      l.setAttribute('stroke','#fff');l.setAttribute('stroke-width','0.05');svg.appendChild(l);
+      l.setAttribute('x1',x1); l.setAttribute('y1',y1);
+      l.setAttribute('x2',x2); l.setAttribute('y2',y2);
+      l.setAttribute('stroke','#fff');
+      l.setAttribute('stroke-width','0.05');
+      svg.appendChild(l);
     });
   const mk=x=>{
     const t=document.createElementNS(svg.namespaceURI,'text');
-    t.setAttribute('x',x);t.setAttribute('y',10);t.setAttribute('class','watermark');t.textContent='@scout.ear';
+    t.setAttribute('x',x);
+    t.setAttribute('y',10);
+    t.setAttribute('class','watermark');
+    t.textContent='@scout.ear';
     svg.appendChild(t);
-  };mk(0.5);mk(9.5);
-  layerGroup=document.createElementNS(svg.namespaceURI,'g');layerGroup.id='marks';svg.appendChild(layerGroup);
+  };
+  mk(0.5);
+  mk(9.5);
+  layerGroup=document.createElementNS(svg.namespaceURI,'g');
+  layerGroup.id='marks';
+  svg.appendChild(layerGroup);
 }
 drawCourt();
 
-/* ====== HERRAMIENTAS DE DIBUJO ====== */
 function drawCircle(cx,cy,col){
   const c=document.createElementNS(svg.namespaceURI,'circle');
-  c.setAttribute('cx',cx);c.setAttribute('cy',cy);c.setAttribute('r',0.18);c.setAttribute('fill',col);
+  c.setAttribute('cx',cx);
+  c.setAttribute('cy',cy);
+  c.setAttribute('r',0.18);
+  c.setAttribute('fill',col);
   layerGroup.appendChild(c);
 }
 function drawLine(x1,y1,x2,y2,col){
   const l=document.createElementNS(svg.namespaceURI,'line');
-  l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',x2);l.setAttribute('y2',y2);
-  l.setAttribute('stroke',col);l.setAttribute('stroke-width',0.07);l.setAttribute('marker-end','url(#arrow)');
+  l.setAttribute('x1',x1);
+  l.setAttribute('y1',y1);
+  l.setAttribute('x2',x2);
+  l.setAttribute('y2',y2);
+  l.setAttribute('stroke',col);
+  l.setAttribute('stroke-width',0.07);
+  l.setAttribute('marker-end','url(#arrow)');
   layerGroup.appendChild(l);
 }
 function createArrowMarker(){
   const m=document.createElementNS(svg.namespaceURI,'marker');
-  m.setAttribute('id','arrow');m.setAttribute('viewBox','0 0 10 10');m.setAttribute('refX','8');
-  m.setAttribute('refY','5');m.setAttribute('markerWidth','3');m.setAttribute('markerHeight','3');m.setAttribute('orient','auto-start-reverse');
-  const p=document.createElementNS(svg.namespaceURI,'path');p.setAttribute('d','M0 0 L10 5 L0 10 z');p.setAttribute('fill','#fff');
-  m.appendChild(p);svg.appendChild(m);
+  m.setAttribute('id','arrow');
+  m.setAttribute('viewBox','0 0 10 10');
+  m.setAttribute('refX','8');
+  m.setAttribute('refY','5');
+  m.setAttribute('markerWidth','3');
+  m.setAttribute('markerHeight','3');
+  m.setAttribute('orient','auto-start-reverse');
+  const p=document.createElementNS(svg.namespaceURI,'path');
+  p.setAttribute('d','M0 0 L10 5 L0 10 z');
+  p.setAttribute('fill','#fff');
+  m.appendChild(p);
+  svg.appendChild(m);
 }
 createArrowMarker();
 
-/* ====== CLICK EN CANCHA ====== */
 svg.addEventListener('click',e=>{
-  if(!(selPlayer&&selAction)){alert('Seleccioná Jugador y Acción para registrar.');return;}
-  const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const p=pt.matrixTransform(svg.getScreenCTM().inverse());
-  if(!pending){pending={x1:p.x,y1:p.y};}
-  else{registerAction(pending.x1,pending.y1,p.x,p.y);pending=null;
-       selAction=null;document.querySelectorAll('#input-actions button').forEach(b=>b.classList.remove('active'));
-       selStatus=null;document.querySelectorAll('#input-status button').forEach(b=>b.classList.remove('active'));}
+  if(!(selPlayer && selAction)){
+    alert('Seleccioná Jugador y Acción para registrar.');
+    return;
+  }
+  const pt=svg.createSVGPoint();
+  pt.x=e.clientX;
+  pt.y=e.clientY;
+  const p=pt.matrixTransform(svg.getScreenCTM().inverse());
+  if(!pending){
+    pending={x1:p.x, y1:p.y};
+  } else {
+    registerAction(pending.x1, pending.y1, p.x, p.y);
+    pending=null;
+    selAction=null;
+    document.querySelectorAll('#input-actions button').forEach(b=>b.classList.remove('active'));
+    selStatus=null;
+    document.querySelectorAll('#input-status button').forEach(b=>b.classList.remove('active'));
+  }
 });
 
-/* ====== REGISTRAR ACCIÓN ====== */
 function registerAction(x1,y1,x2,y2){
-  const status=selStatus||'-';
-  const rec={idx:idx++,action:selAction,player:selPlayer,status,set:selSet,game:selGame,
-             x1:x1.toFixed(2),y1:y1.toFixed(2),x2:x2.toFixed(2),y2:y2.toFixed(2)};
-  records.push(rec);addRow(rec);updateActionCounter();
-  heatmapMode?drawHeatmap():drawAction(rec);
+  const status = selStatus || '-';
+  const rec = {
+    idx: idx++,
+    action: selAction,
+    player: selPlayer,
+    status: status,
+    set: selSet,
+    game: selGame,
+    x1: x1.toFixed(2),
+    y1: y1.toFixed(2),
+    x2: x2.toFixed(2),
+    y2: y2.toFixed(2)
+  };
+  records.push(rec);
+  addRow(rec);
+  updateActionCounter();
+  heatmapMode ? drawHeatmap() : drawAction(rec);
 }
 
-/* ====== TABLA ====== */
 function addRow(rec){
-  const tbody=document.querySelector('#data-table tbody');
-  const tr=document.createElement('tr');tr.dataset.idx=rec.idx;
-  tr.innerHTML=`<td>${rec.idx}</td><td style="color:#ff8800;cursor:pointer">${rec.action}</td>
-    <td>${rec.player}</td><td>${rec.status}</td><td>${rec.set}</td><td>${rec.game}</td>
-    <td>${rec.x1}</td><td>${rec.y1}</td><td>${rec.x2}</td><td>${rec.y2}</td>
+  const tbody = document.querySelector('#data-table tbody');
+  const tr = document.createElement('tr');
+  tr.dataset.idx = rec.idx;
+  tr.innerHTML = `
+    <td>${rec.idx}</td>
+    <td style="color:#ff8800;cursor:pointer">${rec.action}</td>
+    <td>${rec.player}</td>
+    <td>${rec.status}</td>
+    <td>${rec.set}</td>
+    <td>${rec.game}</td>
+    <td>${rec.x1}</td>
+    <td>${rec.y1}</td>
+    <td>${rec.x2}</td>
+    <td>${rec.y2}</td>
     <td><button class="del-btn">X</button></td>`;
   tbody.appendChild(tr);
-  tr.querySelector('.del-btn').addEventListener('click',()=>{
-    const i=records.findIndex(r=>r.idx===rec.idx);if(i!==-1)records.splice(i,1);
-    tr.remove();updateActionCounter();heatmapMode?drawHeatmap():drawFiltered();
+  tr.querySelector('.del-btn').addEventListener('click', () => {
+    const i = records.findIndex(r => r.idx === rec.idx);
+    if (i !== -1) records.splice(i, 1);
+    tr.remove();
+    updateActionCounter();
+    heatmapMode ? drawHeatmap() : drawFiltered();
   });
 }
 
-/* ====== BOTÓN LIMPIAR ====== */
-document.getElementById('clear-visual').addEventListener('click',()=>{
-  layerGroup.innerHTML='';           // limpia todo lo dibujado
-  heatmapMode=false;                 // salimos del modo mapa de calor
+document.getElementById('clear-visual').addEventListener('click', () => {
+  layerGroup.innerHTML = '';
+  heatmapMode = false;
   document.getElementById('heatmap-btn').classList.remove('active');
 });
 
-/* ====== FILTROS ====== */
-function handleFilterChange(){heatmapMode?drawHeatmap():drawFiltered();}
-document.querySelectorAll('#player-filter input,#set-filter input')
-  .forEach(cb=>cb.addEventListener('change',handleFilterChange));
+document.querySelectorAll('#player-filter input, #set-filter input').forEach(cb => {
+  cb.addEventListener('change', () => {
+    heatmapMode ? drawHeatmap() : drawFiltered();
+  });
+});
 
-/* ====== DIBUJO MODO NORMAL ====== */
 function drawFiltered(){
-  layerGroup.innerHTML='';
-  const players=[...document.querySelectorAll('#player-filter input:checked')].map(cb=>cb.value);
-  const sets=[...document.querySelectorAll('#set-filter input:checked')].map(cb=>cb.value);
-  records.forEach(r=>{if(players.includes(r.player)&&sets.includes(r.set))drawAction(r);});
-}
-function drawAction(r){
-  let col='#888';if(r.status==='WINNER')col='#00e000';else if(r.status==='LOSER')col='#e00000';
-  drawCircle(r.x1,r.y1,col);drawCircle(r.x2,r.y2,col);drawLine(r.x1,r.y1,r.x2,r.y2,col);
-}
-
-/* ====== DOWNLOAD CSV ====== */
-document.getElementById('download-btn').addEventListener('click',()=>{
-  if(!records.length)return alert('No hay registros para descargar');
-  const header=['#','Acc','Jug','Res','Set','Game','X1','Y1','X2','Y2'];
-  const csv=[header,...records.map(r=>[r.idx,r.action,r.player,r.status,r.set,r.game,r.x1,r.y1,r.x2,r.y2])]
-              .map(r=>r.join(',')).join('\n');
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='padel_records.csv';a.click();
-});
-
-/* ====== CONTADOR ====== */
-function updateActionCounter(){
-  let counts={};records.forEach(r=>{counts[r.player]??={};counts[r.player][r.action]=(counts[r.player][r.action]||0)+1;});
-  document.getElementById('action-counter').innerHTML=
-    Object.entries(counts).map(([p,a])=>`<div><strong>${p}:</strong> ${
-      Object.entries(a).map(([nm,q])=>`${nm}(${q})`).join(' ')}</div>`).join('');
-}
-updateActionCounter();
-
-/* ====== BOTÓN HEATMAP ====== */
-const heatBtn=document.getElementById('heatmap-btn');
-heatBtn.addEventListener('click',()=>{
-  heatmapMode=true;heatBtn.classList.add('active');drawHeatmap();
-});
-
-/* ====== MAPA DE CALOR ====== */
-function drawHeatmap(){
-  layerGroup.innerHTML='';
-  const players=[...document.querySelectorAll('#player-filter input:checked')].map(cb=>cb.value);
-  const sets=[...document.querySelectorAll('#set-filter input:checked')].map(cb=>cb.value);
-  records.forEach(r=>{
-    if(players.includes(r.player)&&sets.includes(r.set))
-      drawHeatPoint(parseFloat(r.x1),parseFloat(r.y1),getHeatColor(r.status));
+  layerGroup.innerHTML = '';
+  const players = [...document.querySelectorAll('#player-filter input:checked')].map(cb=>cb.value);
+  const sets = [...document.querySelectorAll('#set-filter input:checked')].map(cb=>cb.value);
+  records.forEach(r => {
+    if (players.includes(r.player) && sets.includes(r.set)) {
+      drawAction(r);
+    }
   });
 }
-/* opacidad más alta */
-function getHeatColor(status){
-  if(status==='IN') return 'rgba(0,224,0,0.18)';
-  if(status==='OUT')return 'rgba(224,0,0,0.18)';
-  return 'rgba(150,150,150,0.14)';
+
+function drawAction(r){
+  let col = '#888';
+  if(r.status==='IN') col = '#00e000';
+  else if(r.status==='OUT') col = '#e00000';
+  drawCircle(r.x1, r.y1, col);
+  drawCircle(r.x2, r.y2, col);
+  drawLine(r.x1, r.y1, r.x2, r.y2, col);
 }
-/* 7 “pinceladas” por acción */
-function drawHeatPoint(cx,cy,color){
-  for(let i=0;i<7;i++){
-    const jx=(Math.random()-0.5)*0.1,jy=(Math.random()-0.5)*0.1;
-    const c=document.createElementNS(svg.namespaceURI,'circle');
-    c.setAttribute('cx',cx+jx);c.setAttribute('cy',cy+jy);
-    c.setAttribute('r',0.2+Math.random()*0.1);c.setAttribute('fill',color);c.setAttribute('stroke','none');
-    layerGroup.appendChild(c);
-  }
+
+document.getElementById('download-btn').addEventListener('click', () => {
+  if (!records.length) return alert('No hay registros para descargar');
+  const header = ['#','Acc','Jug','Res','Set','Game','X1','Y1','X2','Y2'];
+  const csv = [header, ...records.map(r => [r.idx, r.action, r.player, r.status, r.set, r.game, r.x1, r.y1, r.x2, r.y2])]
+    .map(r => r.join(',')).join('\n');
+  const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'padel_records.csv';
+  a.click();
+});
+
+function updateActionCounter(){
+  let counts = {}, statusCounts = {};
+  records.forEach(r => {
+    counts[r.player] ??= {};
+    counts[r.player][r.action] = (counts[r.player][r.action] || 0) + 1;
+
+    statusCounts[r.player] ??= {IN:0, OUT:0, NEUTRAL:0};
+    if (r.status === 'IN') statusCounts[r.player].IN++;
+    else if (r.status === 'OUT') statusCounts[r.player].OUT++;
+    else statusCounts[r.player].NEUTRAL++;
+  });
+  document.getElementById('action-counter').innerHTML =
+    Object.entries(counts).map(([p,a]) =>
+      `<div><strong>${p}:</strong> ${
+        Object.entries(a).map(([nm,q]) => `${nm}(${q})`).join(' ')
+      }</div>`
+    ).join('');
+
+  ['Jug1','Jug2','Jug3','Jug4'].forEach(p => {
+    const bar = document.getElementById('bar-' + p);
+    const s = statusCounts[p] || {IN:0, OUT:0, NEUTRAL:0};
+    const total = s.IN + s.OUT + s.NEUTRAL || 1;
+    bar.innerHTML = `
+      <div class="bar-gray" style="width:${(s.NEUTRAL/total)*100}%"></div>
+      <div class="bar-green" style="width:${(s.IN/total)*100}%"></div>
+      <div class="bar-red" style="width:${(s.OUT/total)*100}%"></div>
+    `;
+  });
+}
+
+document.getElementById('heatmap-btn').addEventListener('click', () => {
+  heatmapMode = !heatmapMode;
+  document.getElementById('heatmap-btn').classList.toggle('active');
+  heatmapMode ? drawHeatmap() : drawFiltered();
+});
+
+function drawHeatmap(){
+  layerGroup.innerHTML = '';
+  const players = [...document.querySelectorAll('#player-filter input:checked')].map(cb=>cb.value);
+  const sets = [...document.querySelectorAll('#set-filter input:checked')].map(cb=>cb.value);
+  const colors = {'Jug1':'#00e000','Jug2':'#e00000','Jug3':'#00bfff','Jug4':'#ffff00'};
+  records.forEach(r => {
+    if (players.includes(r.player) && sets.includes(r.set)) {
+      drawCircle(r.x2, r.y2, colors[r.player]);
+    }
+  });
 }
 </script>
 </body>
