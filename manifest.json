@@ -3,17 +3,11 @@
   "short_name": "iPadTag",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0047AB",
-  "theme_color": "#0047AB",
-  "orientation": "portrait",
+  "background_color": "#002266",
+  "theme_color": "#002266",
   "icons": [
     {
-      "src": "iconip.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "iconip.png",
+      "src": "icon-ip.png",
       "sizes": "512x512",
       "type": "image/png"
     }
