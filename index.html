@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Campograma Pádel</title>
+  <title>iPadTag PWA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <style>
-    /* ========= ESTILOS =========== */
     html, body {
       margin: 0;
       height: 100%;
@@ -127,25 +127,18 @@
     .dropdown label:hover {
       background: #666;
     }
-    /* ====== BARRAS ====== */
     .bar-container {
-      width: 100%;
+      margin: 4px 0;
       height: 10px;
+      width: 100%;
       background: #333;
-      border-radius: 6px;
-      overflow: hidden;
-      margin: 4px 0 10px;
-    }
-    .bar {
       display: flex;
-      height: 100%;
+      border-radius: 4px;
+      overflow: hidden;
     }
-    .bar > div {
-      height: 100%;
-    }
-    .bar-gray { background: #888; }
-    .bar-green { background: #00e000; }
-    .bar-red { background: #e00000; }
+    .bar-gray { background: #888; height: 100%; }
+    .bar-green { background: #00e000; height: 100%; }
+    .bar-red { background: #e00000; height: 100%; }
   </style>
 </head>
 <body>
@@ -188,18 +181,12 @@
 
   <h3>Game</h3>
   <div class="buttons" id="input-game">
-    <button data-game="1" class="small active">1</button>
-    <button data-game="2" class="small">2</button>
-    <button data-game="3" class="small">3</button>
-    <button data-game="4" class="small">4</button>
-    <button data-game="5" class="small">5</button>
-    <button data-game="6" class="small">6</button>
-    <button data-game="7" class="small">7</button>
-    <button data-game="8" class="small">8</button>
-    <button data-game="9" class="small">9</button>
-    <button data-game="10" class="small">10</button>
-    <button data-game="11" class="small">11</button>
-    <button data-game="12" class="small">12</button>
+    <button data-game="1" class="small active">1</button><button data-game="2" class="small">2</button>
+    <button data-game="3" class="small">3</button><button data-game="4" class="small">4</button>
+    <button data-game="5" class="small">5</button><button data-game="6" class="small">6</button>
+    <button data-game="7" class="small">7</button><button data-game="8" class="small">8</button>
+    <button data-game="9" class="small">9</button><button data-game="10" class="small">10</button>
+    <button data-game="11" class="small">11</button><button data-game="12" class="small">12</button>
     <button data-game="13" class="small">13</button>
   </div>
 </div>
@@ -234,11 +221,12 @@
 
   <div id="action-counter" style="margin-top:10px;font-size:12px;"></div>
 
-  <div id="player-bars" style="margin-top:14px;">
-    <div><strong>Jug1</strong><div class="bar-container"><div id="bar-Jug1" class="bar"></div></div></div>
-    <div><strong>Jug2</strong><div class="bar-container"><div id="bar-Jug2" class="bar"></div></div></div>
-    <div><strong>Jug3</strong><div class="bar-container"><div id="bar-Jug3" class="bar"></div></div></div>
-    <div><strong>Jug4</strong><div class="bar-container"><div id="bar-Jug4" class="bar"></div></div></div>
+  <h4>Porcentaje Jugadores</h4>
+  <div id="bars">
+    <div><strong>Jug1</strong><div class="bar-container" id="bar-Jug1"></div></div>
+    <div><strong>Jug2</strong><div class="bar-container" id="bar-Jug2"></div></div>
+    <div><strong>Jug3</strong><div class="bar-container" id="bar-Jug3"></div></div>
+    <div><strong>Jug4</strong><div class="bar-container" id="bar-Jug4"></div></div>
   </div>
 
   <h3>Registros</h3>
@@ -257,8 +245,7 @@
 let selPlayer='Jug1', selAction=null, selStatus=null;
 let selSet='1', selGame='1';
 let pending=null, records=[], idx=1, heatmapMode=false;
-const svg=document.getElementById('court');
-let layerGroup;
+const svg=document.getElementById('court'); let layerGroup;
 
 function activate(btn, group) {
   document.querySelectorAll(`#${group} button`).forEach(b => b.classList.remove('active'));
@@ -270,19 +257,18 @@ function activate(btn, group) {
   else if(group==='input-game') selGame=btn.dataset.game;
   pending=null;
 }
-['input-player','input-actions','input-status','input-set','input-game'].forEach(g=>{
+['input-player','input-actions','input-status','input-set','input-game'].forEach(g => {
   document.querySelectorAll(`#${g} button`).forEach(b => b.addEventListener('click',()=>activate(b,g)));
 });
 
 function drawCourt(){
   svg.innerHTML='';
   ['0,0,10,0','10,0,10,20','10,20,0,20','0,20,0,0','0,10,10,10','0,3,10,3','0,17,10,17','5,3,5,17']
-    .forEach(s=>{
-      const [x1,y1,x2,y2]=s.split(','),l=document.createElementNS(svg.namespaceURI,'line');
+    .forEach(s => {
+      const [x1,y1,x2,y2]=s.split(','), l=document.createElementNS(svg.namespaceURI,'line');
       l.setAttribute('x1',x1); l.setAttribute('y1',y1);
       l.setAttribute('x2',x2); l.setAttribute('y2',y2);
-      l.setAttribute('stroke','#fff');
-      l.setAttribute('stroke-width','0.05');
+      l.setAttribute('stroke','#fff'); l.setAttribute('stroke-width','0.05');
       svg.appendChild(l);
     });
   const mk=x=>{
@@ -293,8 +279,7 @@ function drawCourt(){
     t.textContent='@scout.ear';
     svg.appendChild(t);
   };
-  mk(0.5);
-  mk(9.5);
+  mk(0.5); mk(9.5);
   layerGroup=document.createElementNS(svg.namespaceURI,'g');
   layerGroup.id='marks';
   svg.appendChild(layerGroup);
@@ -338,17 +323,13 @@ function createArrowMarker(){
 createArrowMarker();
 
 svg.addEventListener('click',e=>{
-  if(!(selPlayer && selAction)){
-    alert('Seleccioná Jugador y Acción para registrar.');
-    return;
-  }
+  if(!(selPlayer && selAction)){ alert('Seleccioná Jugador y Acción para registrar.'); return; }
   const pt=svg.createSVGPoint();
   pt.x=e.clientX;
   pt.y=e.clientY;
   const p=pt.matrixTransform(svg.getScreenCTM().inverse());
-  if(!pending){
-    pending={x1:p.x, y1:p.y};
-  } else {
+  if(!pending){ pending={x1:p.x, y1:p.y}; }
+  else {
     registerAction(pending.x1, pending.y1, p.x, p.y);
     pending=null;
     selAction=null;
@@ -359,18 +340,18 @@ svg.addEventListener('click',e=>{
 });
 
 function registerAction(x1,y1,x2,y2){
-  const status = selStatus || '-';
-  const rec = {
-    idx: idx++,
-    action: selAction,
-    player: selPlayer,
-    status: status,
-    set: selSet,
-    game: selGame,
-    x1: x1.toFixed(2),
-    y1: y1.toFixed(2),
-    x2: x2.toFixed(2),
-    y2: y2.toFixed(2)
+  const status=selStatus || '-';
+  const rec={
+    idx:idx++,
+    action:selAction,
+    player:selPlayer,
+    status,
+    set:selSet,
+    game:selGame,
+    x1:x1.toFixed(2),
+    y1:y1.toFixed(2),
+    x2:x2.toFixed(2),
+    y2:y2.toFixed(2)
   };
   records.push(rec);
   addRow(rec);
@@ -379,97 +360,87 @@ function registerAction(x1,y1,x2,y2){
 }
 
 function addRow(rec){
-  const tbody = document.querySelector('#data-table tbody');
-  const tr = document.createElement('tr');
-  tr.dataset.idx = rec.idx;
-  tr.innerHTML = `
-    <td>${rec.idx}</td>
-    <td style="color:#ff8800;cursor:pointer">${rec.action}</td>
-    <td>${rec.player}</td>
-    <td>${rec.status}</td>
-    <td>${rec.set}</td>
-    <td>${rec.game}</td>
-    <td>${rec.x1}</td>
-    <td>${rec.y1}</td>
-    <td>${rec.x2}</td>
-    <td>${rec.y2}</td>
+  const tbody=document.querySelector('#data-table tbody');
+  const tr=document.createElement('tr');
+  tr.dataset.idx=rec.idx;
+  tr.innerHTML=`<td>${rec.idx}</td><td style="color:#ff8800;cursor:pointer">${rec.action}</td>
+    <td>${rec.player}</td><td>${rec.status}</td><td>${rec.set}</td><td>${rec.game}</td>
+    <td>${rec.x1}</td><td>${rec.y1}</td><td>${rec.x2}</td><td>${rec.y2}</td>
     <td><button class="del-btn">X</button></td>`;
   tbody.appendChild(tr);
-  tr.querySelector('.del-btn').addEventListener('click', () => {
-    const i = records.findIndex(r => r.idx === rec.idx);
-    if (i !== -1) records.splice(i, 1);
+  tr.querySelector('.del-btn').addEventListener('click',()=>{
+    const i=records.findIndex(r=>r.idx===rec.idx);
+    if(i!==-1) records.splice(i,1);
     tr.remove();
     updateActionCounter();
     heatmapMode ? drawHeatmap() : drawFiltered();
   });
 }
 
-document.getElementById('clear-visual').addEventListener('click', () => {
-  layerGroup.innerHTML = '';
-  heatmapMode = false;
+document.getElementById('clear-visual').addEventListener('click',()=>{
+  layerGroup.innerHTML='';
+  heatmapMode=false;
   document.getElementById('heatmap-btn').classList.remove('active');
 });
 
-document.querySelectorAll('#player-filter input, #set-filter input').forEach(cb => {
-  cb.addEventListener('change', () => {
+document.querySelectorAll('#player-filter input,#set-filter input')
+  .forEach(cb=>cb.addEventListener('change',()=>{
+    updateActionCounter();
     heatmapMode ? drawHeatmap() : drawFiltered();
-  });
-});
+  }));
 
 function drawFiltered(){
-  layerGroup.innerHTML = '';
-  const players = [...document.querySelectorAll('#player-filter input:checked')].map(cb=>cb.value);
-  const sets = [...document.querySelectorAll('#set-filter input:checked')].map(cb=>cb.value);
-  records.forEach(r => {
-    if (players.includes(r.player) && sets.includes(r.set)) {
+  layerGroup.innerHTML='';
+  const players=[...document.querySelectorAll('#player-filter input:checked')].map(cb=>cb.value);
+  const sets=[...document.querySelectorAll('#set-filter input:checked')].map(cb=>cb.value);
+  records.forEach(r=>{
+    if(players.includes(r.player) && sets.includes(r.set))
       drawAction(r);
-    }
   });
 }
 
 function drawAction(r){
-  let col = '#888';
-  if(r.status==='IN') col = '#00e000';
-  else if(r.status==='OUT') col = '#e00000';
-  drawCircle(r.x1, r.y1, col);
-  drawCircle(r.x2, r.y2, col);
-  drawLine(r.x1, r.y1, r.x2, r.y2, col);
+  let col='#888';
+  if(r.status==='IN') col='#00e000';
+  else if(r.status==='OUT') col='#e00000';
+  drawCircle(r.x1,r.y1,col);
+  drawCircle(r.x2,r.y2,col);
+  drawLine(r.x1,r.y1,r.x2,r.y2,col);
 }
 
-document.getElementById('download-btn').addEventListener('click', () => {
-  if (!records.length) return alert('No hay registros para descargar');
-  const header = ['#','Acc','Jug','Res','Set','Game','X1','Y1','X2','Y2'];
-  const csv = [header, ...records.map(r => [r.idx, r.action, r.player, r.status, r.set, r.game, r.x1, r.y1, r.x2, r.y2])]
-    .map(r => r.join(',')).join('\n');
-  const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'padel_records.csv';
+document.getElementById('download-btn').addEventListener('click',()=>{
+  if(!records.length) return alert('No hay registros para descargar');
+  const header=['#','Acc','Jug','Res','Set','Game','X1','Y1','X2','Y2'];
+  const csv=[header, ...records.map(r=>[
+    r.idx,r.action,r.player,r.status,r.set,r.game,r.x1,r.y1,r.x2,r.y2
+  ])].map(r=>r.join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='padel_records.csv';
   a.click();
 });
 
 function updateActionCounter(){
-  let counts = {}, statusCounts = {};
-  records.forEach(r => {
-    counts[r.player] ??= {};
-    counts[r.player][r.action] = (counts[r.player][r.action] || 0) + 1;
-
-    statusCounts[r.player] ??= {IN:0, OUT:0, NEUTRAL:0};
-    if (r.status === 'IN') statusCounts[r.player].IN++;
-    else if (r.status === 'OUT') statusCounts[r.player].OUT++;
+  const sets=[...document.querySelectorAll('#set-filter input:checked')].map(cb=>cb.value);
+  const visibleRecords = records.filter(r => sets.includes(r.set));
+  let counts={}, statusCounts={};
+  visibleRecords.forEach(r => {
+    counts[r.player] ??={};
+    counts[r.player][r.action]=(counts[r.player][r.action] || 0)+1;
+    statusCounts[r.player] ??={IN:0, OUT:0, NEUTRAL:0};
+    if (r.status==='IN') statusCounts[r.player].IN++;
+    else if (r.status==='OUT') statusCounts[r.player].OUT++;
     else statusCounts[r.player].NEUTRAL++;
   });
   document.getElementById('action-counter').innerHTML =
-    Object.entries(counts).map(([p,a]) =>
-      `<div><strong>${p}:</strong> ${
-        Object.entries(a).map(([nm,q]) => `${nm}(${q})`).join(' ')
-      }</div>`
+    Object.entries(counts).map(([p,a])=>
+      `<div><strong>${p}:</strong> ${Object.entries(a).map(([nm,q])=>`${nm}(${q})`).join(' ')}</div>`
     ).join('');
-
-  ['Jug1','Jug2','Jug3','Jug4'].forEach(p => {
-    const bar = document.getElementById('bar-' + p);
-    const s = statusCounts[p] || {IN:0, OUT:0, NEUTRAL:0};
-    const total = s.IN + s.OUT + s.NEUTRAL || 1;
+  ['Jug1','Jug2','Jug3','Jug4'].forEach(p=>{
+    const bar=document.getElementById('bar-'+p);
+    const s=statusCounts[p] || {IN:0, OUT:0, NEUTRAL:0};
+    const total=s.IN+s.OUT+s.NEUTRAL || 1;
     bar.innerHTML = `
       <div class="bar-gray" style="width:${(s.NEUTRAL/total)*100}%"></div>
       <div class="bar-green" style="width:${(s.IN/total)*100}%"></div>
@@ -477,27 +448,10 @@ function updateActionCounter(){
     `;
   });
 }
-
-document.getElementById('heatmap-btn').addEventListener('click', () => {
-  heatmapMode = !heatmapMode;
-  document.getElementById('heatmap-btn').classList.toggle('active');
-  heatmapMode ? drawHeatmap() : drawFiltered();
-});
-
-function drawHeatmap(){
-  layerGroup.innerHTML = '';
-  const players = [...document.querySelectorAll('#player-filter input:checked')].map(cb=>cb.value);
-  const sets = [...document.querySelectorAll('#set-filter input:checked')].map(cb=>cb.value);
-  const colors = {'Jug1':'#00e000','Jug2':'#e00000','Jug3':'#00bfff','Jug4':'#ffff00'};
-  records.forEach(r => {
-    if (players.includes(r.player) && sets.includes(r.set)) {
-      drawCircle(r.x2, r.y2, colors[r.player]);
-    }
-  });
-}
 </script>
 </body>
 </html>
+
 
 <!-- Forzado para recargar GitHub Pages -->
 
