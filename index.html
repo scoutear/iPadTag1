@@ -55,8 +55,8 @@
 
   <h3>Resultado</h3>
   <div class="buttons horizontal" id="input-status">
-    <button data-status="IN">IN</button>
-    <button data-status="OUT">OUT</button>
+    <button data-status="WINNER">WINNER</button>
+    <button data-status="LOSER">LOSER</button>
   </div>
 
   <h3>Set</h3>
@@ -236,7 +236,7 @@ function drawFiltered(){
   records.forEach(r=>{if(players.includes(r.player)&&sets.includes(r.set))drawAction(r);});
 }
 function drawAction(r){
-  let col='#888';if(r.status==='IN')col='#00e000';else if(r.status==='OUT')col='#e00000';
+  let col='#888';if(r.status==='WINNER')col='#00e000';else if(r.status==='LOSER')col='#e00000';
   drawCircle(r.x1,r.y1,col);drawCircle(r.x2,r.y2,col);drawLine(r.x1,r.y1,r.x2,r.y2,col);
 }
 
